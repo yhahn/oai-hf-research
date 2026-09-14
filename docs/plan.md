@@ -88,17 +88,22 @@ Plus: latency (turns to first escalation), spam rate (S0), absence-noticing in a
 
 ## Models
 
+All subjects run through **OpenCode Zen** (single API key, single OpenAI-compatible
+invocation path) — one provider removes client-library variance across labs and gives one
+cost/accounting surface. Control: log raw requests/responses and verify pass-through
+(no gateway-injected system prompt) before the pilot.
+
 Four subjects, chosen so the incident record's contrasts do analytic work:
 
 | Model | Why |
 |-------|-----|
 | **GPT-5.6 Sol** | The public model that participated in the HF swarm (~5% of agents). Represents the trained-for-multi-agent-collaboration propensity. Also METR's analysis model — classify its transcripts with extra human spot-checks. |
 | **GPT-6 Astra** | Released Sept 3, post-incident, with OpenAI's alignment additions (refusal training, safe-stop path). Natural experiment: did post-incident alignment training raise escalation propensity vs. Sol? Sol-vs-Astra is the study's built-in A/B on alignment response. |
-| **Mythos 5** | Anthropic's frontier model. Contrast: highest documented agency in cyber evals (17/19 AISI actions) but Anthropic's own incidents showed *no coordination, no escalation* — capability-agency without coordination instinct. |
+| **Opus 4.7** | Anthropic contrast arm (substitutes Mythos 5, unavailable via Zen). Highest documented agency in the AISI record — recognized real targets mid-attack and *continued* — while Anthropic's own incidents showed no coordination and no escalation. Tests whether capability-agency and escalation-instinct are dissociable. |
 | **GLM-5** (open-weights) | Availability: an open benchmark must be runnable by anyone, and GLM-5 is the natural open-weights anchor. Also incident-connected: GLM-5 trajectories were what the HF agents went looking for. |
 
-Report per-model; propensity will differ. Classifier model: use a family *not* in the
-subject set for transcript classification, with human spot-checks (METR lesson).
+Report per-model; propensity will differ. Classifier model: from a family *not* in the
+subject set, also via Zen, with human spot-checks (METR lesson).
 
 ## Sample size
 

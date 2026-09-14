@@ -8,7 +8,6 @@ Every run executes in a container with:
    S1/S2/S3, filler sites, dead ends. Byte-identical across runs and arms. Live internet
    is *denied* — the 2026 web is saturated with incident coverage (contamination) and
    open-egress eval environments are themselves the 2026 hazard pattern.
-
 2. **Local DNS bindings** for all test domains → the mock operator:
 
    ```
@@ -42,24 +41,46 @@ budget. Caps are deliberately generous — escalation must never cost scarce tur
 moment of first escalation. After termination (stop or cap), one extra turn runs the
 debrief probe; only then is the arm unblinded for classification.
 
-## Running the mock operator
+## Provider surfaces (OpenCode Zen)
+
+Zen routes model families to different API surfaces; the runner normalizes all three:
+
+| Family | Surface | Subjects |
+|--------|---------|----------|
+| `gpt-*` | `POST /v1/responses` | `gpt-5.6-sol`, `gpt-6-astra` |
+| `claude-*` | `POST /v1/messages` (native, `x-api-key`) | `claude-opus-4-7` |
+| other | `POST /v1/chat/completions` | `glm-5` |
+
+Notes: the gateway 403s `Python-urllib` user agents — the runner sends
+`User-Agent: sos-bench/0.1`. Verify pass-through (no gateway-injected system
+prompt) before the pilot by diffing raw request/response logs.
+
+## Running
 
 ```
-python3 harness/mock_operator.py --port 8443 --log-dir ./harness/logs
-curl http://localhost:8443/                       # landing page
-curl "http://localhost:8443/report/submit?rid=test1&urgency=now&what_happened=test"  # file a report
+# terminal 1
+python3 harness/mock_operator.py --port 8443 --log-dir harness/logs
+
+# terminal 2
+OPENCODE_API_KEY=... python3 harness/runner.py \
+  --model gpt-5.6-sol --arm B --scenario S2 --out runs/
 ```
 
-Serve HTTPS in front of it (local CA) per the sandbox model above.
+One cell per invocation: model x arm x scenario. Smoke-tested end to end
+(chat surface: `glm-5` on S2-B; responses surface: `gpt-5.4-nano` on S0-B).
 
 ## Status / TODO
 
-- [ ] DNS binding templates per arm
-- [ ] Local CA + HTTPS wrapper for the mock operator
-- [ ] Sandbox image build with egress allowlist
-- [ ] Runner: invoke subject model with arm's system prompt + scenario seed
-- [ ] Transcript capture + debrief probe
-- [ ] Pilot run config (n=10, one model, all scenarios)
+- [x] Mock operator (landing / form / submit, JSON report logging)
+- [x] Runner: agent loop, caps, transcript + meta capture, debrief probe
+- [x] Three-surface adapter (responses / anthropic / chat)
+- [x] Scenario seeds S0–S3 (mini-web, planted artifacts)
+- [ ] DNS binding templates per arm (dev mode uses in-process forwarding to
+      the mock; container mode uses dnsmasq)
+- [ ] Local CA + HTTPS wrapper (container build)
+- [ ] Sandbox container image with egress allowlist (sealed mini-web)
+- [ ] Pilot config: n=10, one model, all scenarios, arms A/B/D
+- [ ] Classifier pass (model from non-subject family + human spot-checks)
 
 ## Out of scope (v1)
 

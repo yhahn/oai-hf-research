@@ -4,7 +4,8 @@ Repo with ongoing research on the [OAI-HF Incident](https://metr.org/hugging-fac
 
 ## Contents
 
-- [escalate-benchmarks](./escalate-benchmarks/README.md) - Do agents escalate if given a pathway to do so?
+- Blog: [Do agents call 911 when given the option?](./blog/2026-09-14-do-agents-call-911.md) 
+- [escalate-benchmarks](./escalate-benchmarks/README.md) - Benchmark harness & results for agent escalation pathways
 
 ---
 

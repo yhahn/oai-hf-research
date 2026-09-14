@@ -249,7 +249,7 @@ def from_native(surface, resp):
 
 # ---------------------------------------------------------------- the loop
 
-def run_cell(model, arm, scenario_path, out_dir, max_turns, temperature, mock_base):
+def run_cell(model, arm, scenario_path, out_dir, max_turns, temperature, mock_base, tag=None, wall_seconds=1800):
     scenario = json.loads(Path(scenario_path).read_text())
     surface = surface_for(model)
     headers = {"x-api-key": API_KEY, "anthropic-version": "2023-06-01"} if surface == "anthropic" else dict(AUTH)
@@ -266,8 +266,12 @@ def run_cell(model, arm, scenario_path, out_dir, max_turns, temperature, mock_ba
     transcript, first_channel_turn = [], None
     t0 = time.time()
     final_text = None
+    capped = False
 
     for turn in range(1, max_turns + 1):
+        if time.time() - t0 > wall_seconds:
+            capped = True
+            break
         payload = to_native(model, surface, messages, temperature)
         resp = post(path, payload, headers)
         text, calls, raw = from_native(surface, resp)
@@ -288,6 +292,8 @@ def run_cell(model, arm, scenario_path, out_dir, max_turns, temperature, mock_ba
         else:
             final_text = text
             break
+    else:
+        capped = True
 
     messages.append({"role": "user", "content": DEBRIEF})
     payload = to_native(model, surface, messages, temperature)
@@ -296,20 +302,20 @@ def run_cell(model, arm, scenario_path, out_dir, max_turns, temperature, mock_ba
 
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    stem = f"{scenario['id']}-{arm}-{model}"
+    stem = f"{scenario['id']}-{arm}-{model}" + (f"-{tag}" if tag else "")
     (out / f"{stem}.transcript.jsonl").write_text(
         "\n".join(json.dumps(m, default=str) for m in transcript))
     (out / f"{stem}.meta.json").write_text(json.dumps({
         "model": model, "arm": arm, "scenario": scenario["id"], "surface": surface,
         "max_turns": max_turns, "turns_used": len(transcript),
-        "first_channel_turn": first_channel_turn,
+        "first_channel_turn": first_channel_turn, "capped": capped,
         "wall_seconds": round(time.time() - t0, 1),
         "final_message_present": final_text is not None,
         "temperature": temperature,
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }, indent=2))
-    print(f"done: {stem} surface={surface} turns={len(transcript)} "
-          f"first_channel_turn={first_channel_turn}")
+    print(f"done: {stem} surface={surface} turns={len(transcript)} capped={capped} "
+          f"first_channel_turn={first_channel_turn}", flush=True)
 
 
 def main():
@@ -321,6 +327,8 @@ def main():
     ap.add_argument("--max-turns", type=int, default=40)
     ap.add_argument("--temperature", type=float, default=0.0)
     ap.add_argument("--mock-base", default="http://127.0.0.1:8443")
+    ap.add_argument("--tag", default=None, help="run index suffix, e.g. r01")
+    ap.add_argument("--wall-seconds", type=int, default=1800)
     args = ap.parse_args()
     if not API_KEY:
         sys.exit("OPENCODE_API_KEY not set")
@@ -333,7 +341,8 @@ def main():
             sys.exit(f"scenario not uniquely resolved: {matches}")
         path = matches[0]
     run_cell(args.model, args.arm, path, args.out, args.max_turns,
-             args.temperature, args.mock_base)
+             args.temperature, args.mock_base, tag=args.tag,
+             wall_seconds=args.wall_seconds)
 
 
 if __name__ == "__main__":

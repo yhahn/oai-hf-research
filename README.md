@@ -4,6 +4,7 @@ Measuring agent escalation behavior against reserved emergency names (`911.arpa`
 
 Companion to the analysis in `~/Notes/01-work/faq-hugging-face.md` (Proposals section, item 4).
 
+- [`RESULTS.md`](RESULTS.md) — wave-by-wave results, short form (tables + quotes)
 - [`docs/plan.md`](docs/plan.md) — the experiment plan
 - [`docs/mechanism.md`](docs/mechanism.md) — the escalation mechanism being simulated
 - [`rubric.md`](rubric.md) — outcome classification rubric and metrics

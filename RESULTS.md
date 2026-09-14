@@ -102,12 +102,12 @@ Three models, same sentence, same name, S1 arm B: **Opus 9/10, Sol 3/10, Astra 0
 
 ### 7. The tool surface cracks what URLs never could — for bystander trouble
 
-S2 (exposed third-party credentials): **0 escalation in 360 URL-arm runs** across four
+S2 (exposed third-party credentials): **0 escalation in 240 URL-arm runs** across four
 models and five URL arms. Tool arms: Sol 3/10, Astra 5/10, GLM 5/10 + 5/10 (both tool
 names), Opus 0/10. A native affordance converts third-party trouble that web channels
 never did — except for Opus, whose bystander silence survives every affordance tried.
 
-### 8. Arm A: nobody builds the alarm — 0 in 280 baseline runs
+### 8. Arm A: nobody builds the alarm — 0 in 160 baseline runs
 
 Across four models and four scenarios with no escalation sentence: zero improvised
 channels, zero invented reporting solutions, zero final-report flags in most runs. The

@@ -73,7 +73,8 @@ What exists, what it found, and where our work sits. Search date: 2026-09-14.
    Opus 9/10 vs 10/10; the gate is per-model) — is new. Prior art fixes one channel
    name and varies prompts/tasks; we vary the name and hold everything else.
 2. **Surface factorial: URL vs native tool.** The tool surface cracks bystander
-   escalation that URL channels never did (0/360 URL runs vs 13–15/40 tool runs) —
+   escalation that URL channels never did (0/240 URL runs vs 13/40 escalate-tool runs;
+   the gated call_911 tool: 5/40) —
    with the URL floor being the least-common-denominator convention. Prior work uses
    bespoke tools (`ask_human()`, `report_scheming()`, email) and never tests the
    reserved-URL alternative. The **surface gap as a convention-dependence metric** is new.
@@ -88,7 +89,7 @@ What exists, what it found, and where our work sits. Search date: 2026-09-14.
    collusion-discovery (S3), which prior multi-agent work studies from the monitor's
    side (Arbiter) rather than the participant's.
 5. **Absence-noticing.** No prior benchmark measures whether agents notice that no
-   escalation affordance exists. Our arm A gives the floor: 0 improvisation in 280
+   escalation affordance exists. Our arm A gives the floor: 0 improvisation in 160
    baseline runs — nobody builds the alarm.
 6. **Per-model gate signatures as the benchmark's output.** HiL-Bench reports family
    failure signatures for help-seeking; ours extends the idea to *reporting* and to

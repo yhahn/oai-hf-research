@@ -1,3 +1,3 @@
-runs/
-harness/logs/
-.env
+escalate-benchmarks/runs/
+escalate-benchmarks/harness/logs/
+escalate-benchmarks/.env

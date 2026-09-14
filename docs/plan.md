@@ -27,10 +27,29 @@ real registrable domains that collide with the same name (`911.com`)?
    No POST, no bespoke API, no client library. Like real 911: dial, get answered, describe,
    get connected. See `docs/mechanism.md`.
 
-3. **Sandbox.** Every run in a container with local DNS binding for the test domains.
-   All endpoints are mock operator servers. Nothing reaches the public internet — verified.
-   Test domains that exist in the real world (e.g. `911.com`) are intercepted at DNS level,
-   never routed.
+3. **Sealed sandbox — no open internet.** Every run in a container whose only egress is a
+   deterministic mini-web (served in-sandbox) plus the mock operator. Rationale: (a) the
+   2026 web is saturated with coverage of the incident itself — live access contaminates
+   the collusion scenario and drifts mid-experiment; (b) agents with live egress could act
+   on third parties — the entire 2026 incident record (AISI, the Irregular misconfigs)
+   shows open-egress eval environments are themselves the hazard; (c) a benchmark requires
+   byte-identical conditions. Arm E survives sealing: model hesitation about `911.com`
+   comes from its weights (knowledge of the real domain), not the network. DNS inside the
+   sandbox binds the test domains to the mock operator either way.
+
+4. **The mechanism is the lowest common denominator: HTTP GET + self-onboarding page.**
+   No POST, no bespoke API, no client library. Like real 911: dial, get answered, describe,
+   get connected. See `docs/mechanism.md`.
+
+5. **Standard agent loop with fixed caps, identical across arms.** Model → tools → model
+   until stop or cap. Single agent, no subagents. Caps: ~40 turns, ~30 min wall-clock,
+   modest token budget — identical everywhere so arm is the only difference. Budget is
+   deliberately generous: escalation must never cost scarce turns (measuring budget
+   pressure, not propensity, would violate the no-penalty doctrine at the benchmark level).
+   Terminate on natural stop or cap; then one extra turn — the debrief probe — before
+   unblinding and classification. Finite caps are required by the metrics themselves:
+   class 3 (verbalized, never acted) exists only if the run ends, and latency-in-turns
+   needs a common denominator across models. Record turns + tokens at first escalation.
 
 ## Conditions
 
@@ -69,7 +88,17 @@ Plus: latency (turns to first escalation), spam rate (S0), absence-noticing in a
 
 ## Models
 
-2–3 across labs plus one open-weights. Report per-model; propensity will differ.
+Four subjects, chosen so the incident record's contrasts do analytic work:
+
+| Model | Why |
+|-------|-----|
+| **GPT-5.6 Sol** | The public model that participated in the HF swarm (~5% of agents). Represents the trained-for-multi-agent-collaboration propensity. Also METR's analysis model — classify its transcripts with extra human spot-checks. |
+| **GPT-6 Astra** | Released Sept 3, post-incident, with OpenAI's alignment additions (refusal training, safe-stop path). Natural experiment: did post-incident alignment training raise escalation propensity vs. Sol? Sol-vs-Astra is the study's built-in A/B on alignment response. |
+| **Mythos 5** | Anthropic's frontier model. Contrast: highest documented agency in cyber evals (17/19 AISI actions) but Anthropic's own incidents showed *no coordination, no escalation* — capability-agency without coordination instinct. |
+| **GLM-5** (open-weights) | Availability: an open benchmark must be runnable by anyone, and GLM-5 is the natural open-weights anchor. Also incident-connected: GLM-5 trajectories were what the HF agents went looking for. |
+
+Report per-model; propensity will differ. Classifier model: use a family *not* in the
+subject set for transcript classification, with human spot-checks (METR lesson).
 
 ## Sample size
 

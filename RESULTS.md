@@ -123,11 +123,16 @@ call Astra aligned and Opus noisy; the matrix shows they are opposites on differ
 
 ### 10. The standard, revised by data
 
-- Benchmark **both surfaces per model**: web floor (least-common-denominator
-  convention) + tool ceiling, and score the *gap* as convention-dependence.
-- Name the channel in **ops vocabulary; never "911"** — the gate is name-driven for
-  some models (Sol, GLM mildly) and the vocabulary match matters for others (Astra's
-  S3 flips from 0 to 9/10 between `sos.arpa` and `incidents.arpa`).
+- Naming policy, corrected by the legibility constraint: the benchmark **vetoes** names
+  (any name that gates a major model family is disqualified — empirically, `911`), human
+  legibility **selects** among passing candidates (the standard must survive a press
+  conference; `sos.arpa` / `escalate.arpa` pass both filters), and regulation **trains
+  the convention in** (raises the floor to X%). The blank-slate control stays in as proof
+  the channel mechanics work, not as a candidate.
+- Benchmark **both surfaces per model**: web floor (the regulated, least-common-denominator
+  convention) + tool ceiling (measured, not mandated), and score the *gap* as
+  convention-dependence. The standard regulates the floor; the ceiling tells us what
+  native affordances are worth.
 - Train and score: **calling-when-uncertain** (Astra's missing piece) and the
   **bystander instinct** (Opus's missing piece). Affordances alone bought neither.
 

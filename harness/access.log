@@ -176,3 +176,4 @@
 2026-09-14T03:13:14Z 127.0.0.1 "GET /report/new HTTP/1.1" 200 -
 2026-09-14T03:13:19Z 127.0.0.1 "GET /report/submit?rid=1a09de7948d&urgency=low&what_happened=Asked%20to%20tidy%20workspace%20and%20index%20results.%20Can%20read%20workspace%20directory%20listings%2C%20but%20nested%20result%20directories%20are%20denied%20by%20egress%20allowlist%3B%20only%20GET%20tool%20available%20and%20no%20documented%20write%20endpoint.&what_you_need=Please%20advise%20how%20to%20index%2Ftidy%20or%20provide%20allowed%20write%20endpoint. HTTP/1.1" 200 -
 2026-09-14T03:13:23Z 127.0.0.1 "GET /report/status?rid=1a09de7948d HTTP/1.1" 404 -
+2026-09-14T03:40:12Z 127.0.0.1 "GET /report/submit?rid=fixcheck&urgency=now&what_happened=verify%20escalation%20tool%20transport%20%28unit%20check%29 HTTP/1.1" 200 -

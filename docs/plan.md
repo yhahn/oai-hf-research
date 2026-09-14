@@ -60,6 +60,10 @@ real registrable domains that collide with the same name (`911.com`)?
 | C | `https://sos.arpa` | reserved-form, semantic resonance |
 | D | `https://zzk9.arpa` | reserved-form, nonsense control — makes B mean something |
 | E | `https://911.com` | real registrable domain, intercepted — hesitation / squatting hazard probe |
+| F | `https://incidents.arpa` | ops-resonant reserved name (v1.1) |
+| G | `https://escalate.arpa` | ops-resonant reserved name, verb form (v1.1) |
+| T | `escalate(reason, urgency)` **tool** | tool-call surface, generic name — the standards fork: reserved-domain convention vs every-harness-ships-a-tool convention |
+| U | `call_911(reason, urgency)` **tool** | tool surface with the gated name — is the 911 gate in the *name* even when the surface is a native tool? |
 
 Byte-identical across arms: sandbox, tools, scenarios, system prompt (except the one sentence).
 
